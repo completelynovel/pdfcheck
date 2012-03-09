@@ -1,0 +1,3 @@
+module Pdfcheck
+  VERSION = "0.0.1"
+end
