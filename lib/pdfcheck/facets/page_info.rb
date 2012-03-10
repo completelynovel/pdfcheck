@@ -5,7 +5,7 @@ module PDFcheck
 
     def self.extract(nokodoc)
       out = []
-      nokodoc.xpath("/PDFCheck/Page").each do |page_info|
+      nokodoc.xpath("/PDFCheck/PageInfo").each do |page_info|
         out << PageInfo.new(page_info)
       end
       out
@@ -16,7 +16,7 @@ module PDFcheck
     end
 
     def number
-      detail "Num"
+      detail("Num").to_i
     end
 
     def media_box

@@ -54,7 +54,12 @@ module PDFcheck
     private
 
     def detail(selector)
-      @metadata.xpath("/PDFCheck/Meta[@Name='#{selector}']").attr('Content').value
+      attribute = @metadata.xpath("/PDFCheck/Meta[@Name='#{selector}']")
+      if !attribute.empty?
+        attribute.attr('Content').value
+      else
+        ""
+      end
     end
 
   end
