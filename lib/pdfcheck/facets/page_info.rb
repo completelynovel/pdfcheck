@@ -40,7 +40,7 @@ module PDFcheck
     end
 
     def rotation
-      detail "Rotate"
+      detail("Rotate").to_i
     end
 
     private
