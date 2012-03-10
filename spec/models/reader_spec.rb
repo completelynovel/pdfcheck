@@ -138,6 +138,26 @@ describe PDFcheck::Reader do
         @pdfx.pages_count.should == 86
       end
     end
+
+    describe "even_pages?" do
+      it "should return true with an even number of pages" do
+        @pdfx.even_pages?.should be_true
+      end
+
+      it "should return false with an odd number of pages" do
+        @pdfa.even_pages?.should be_false
+      end
+    end
+
+    describe "odd_pages?" do
+      it "should return true if an odd number of pages" do
+        @pdfa.odd_pages?.should be_true
+      end
+
+      it "should return false if an even number of pages" do
+        @pdfx.odd_pages?.should be_false
+      end
+    end
   end
 
 end

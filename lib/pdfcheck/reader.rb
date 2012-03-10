@@ -93,6 +93,14 @@ module PDFcheck
       @pages_info.last.number
     end
 
+    def even_pages?
+      pages_count % 2 == 0
+    end
+
+    def odd_pages?
+      pages_count % 2 == 1
+    end
+
     private
 
     def process(file_path)
