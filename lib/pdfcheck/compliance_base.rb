@@ -4,7 +4,7 @@ module PDFcheck
     def initialize(reader)
       @reader = reader
       @report = {}
-      check
+      do_checks
     end
 
     def report
@@ -12,7 +12,7 @@ module PDFcheck
     end
 
     def pass?
-      @report.values.all?{ |value| value }
+      @report.values.all?{ |value| value == true }
     end
 
     def errors
@@ -23,7 +23,15 @@ module PDFcheck
       errors
     end
 
-    def check
+    def do_checks
+    end
+
+    def check(facet, expected = true)
+      facet == expected ? true : "is #{facet} but expected #{expected}"
+    end
+
+    def check_max(facet, expected)
+      facet < expected ? true : "of #{facet} is greater than #{expected}"
     end
 
   end
