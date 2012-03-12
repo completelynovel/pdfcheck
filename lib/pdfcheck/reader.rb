@@ -2,7 +2,7 @@ module PDFcheck
 
   class Reader
 
-    attr_accessor :details
+    attr_accessor :details, :xml
     attr_accessor :fonts, :colors, :metadata, :security, :pages, :pages_info
 
     # PDFCheck.new(file_path, option)
@@ -102,11 +102,11 @@ module PDFcheck
       command << file_path
       command << temp_file_path
       command << "&& cat #{temp_file_path}"
-      output  = `#{command.join(" ")}`
+      @xml  = `#{command.join(" ")}`
     
       File.unlink(temp_file_path) unless options[:keep_xml]
 
-      Nokogiri::XML.parse(output)
+      Nokogiri::XML.parse(@xml)
     end
 
   end
