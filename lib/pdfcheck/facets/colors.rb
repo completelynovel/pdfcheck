@@ -1,4 +1,3 @@
-
 module PDFcheck
 
   class Colors
