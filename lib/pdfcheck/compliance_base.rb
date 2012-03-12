@@ -27,11 +27,11 @@ module PDFcheck
     end
 
     def check(facet, expected = true)
-      facet == expected ? true : "is #{facet} but expected #{expected}"
+      facet == expected ? true : "is '#{facet}' but expected '#{expected}'"
     end
 
     def check_max(facet, expected)
-      facet < expected ? true : "of #{facet} is greater than #{expected}"
+      facet < expected ? true : "of '#{facet}' is greater than '#{expected}'"
     end
 
   end
