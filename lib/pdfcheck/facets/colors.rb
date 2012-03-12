@@ -1,7 +1,7 @@
 
 module PDFcheck
 
-  class Color
+  class Colors
 
     def initialize(nokodoc)
       @colors = nokodoc

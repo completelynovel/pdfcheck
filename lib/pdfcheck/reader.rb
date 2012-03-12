@@ -3,7 +3,7 @@ module PDFcheck
   class Reader
 
     attr_accessor :details
-    attr_accessor :fonts, :color, :metadata, :security, :pages, :pages_info
+    attr_accessor :fonts, :colors, :metadata, :security, :pages, :pages_info
 
     # PDFCheck.new(file_path, option)
     # options
@@ -17,7 +17,7 @@ module PDFcheck
       @tmp_dir       = options[:tmp_dir] || "/tmp"
       @details       = process(file_path, options)
 
-      @color      = Color.new(@details)
+      @colors     = Colors.new(@details)
       @fonts      = Font.extract(@details)
       @metadata   = Metadata.new(@details)
       @pages      = Page.extract(@details)
@@ -63,18 +63,18 @@ module PDFcheck
     end
 
     #
-    # Color
+    # Colors
     #
     def cmyk?
-      @color.spaces.include?("CMYK")
+      @colors.spaces.include?("CMYK")
     end
 
     def rgb?
-      @color.spaces.include?("RGB")
+      @colors.spaces.include?("RGB")
     end
 
     def grayscale?
-      @color.spaces.include?("Gray")
+      @colors.spaces.include?("Gray")
     end
 
     #

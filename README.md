@@ -58,10 +58,10 @@ metadata.pdfx_conformance #=> "PDF/X-1a:2001"
 The color attributes of the PDF can be inspected
 
 ```ruby
-color = reader.color #=> #<PDFcheck::Color::0x3eb2140>
-color.spaces #=> ["CMYK", "Grey"]
-color.process #=> "black"
-color.max_cmyk_density #=> 120
+colors = reader.colors #=> #<PDFcheck::Color::0x3eb2140>
+colors.spaces #=> ["CMYK", "Grey"]
+colors.process #=> "black"
+colors.max_cmyk_density #=> 120
 ```
 
 ### Page Info
