@@ -30,7 +30,7 @@ module PDFcheck
     private
 
     def detail(selector)
-      @security.xpath("/PDFCheck/Colors").first.attr(selector)
+      @security.xpath("/PDFCheck/PDFSecurity").first.attr(selector)
     end
   end
 

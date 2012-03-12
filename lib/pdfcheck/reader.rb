@@ -9,12 +9,13 @@ module PDFcheck
     # options
     # - :pdfcheck_path #=> path to pdfcheck bin
     # - :tmp_dir #=> path to a tmp directory to store xml output
+    # - :keep_xml #=> set to true to keep the pdfcheck output xml
     def initialize(file_path, options = {})
       raise "Unknown file type" if File.extname(file_path) != ".pdf"
 
       @pdfcheck_path = options[:pdfcheck_path] || "pdfcheck"
       @tmp_dir       = options[:tmp_dir] || "/tmp"
-      @details       = process(file_path)
+      @details       = process(file_path, options)
 
       @color      = Color.new(@details)
       @fonts      = Font.extract(@details)
@@ -30,36 +31,26 @@ module PDFcheck
     end
 
     #
+    # Compliance
+    #
+    # pdfx = reader.compliance("PDFX") #=> %<PDFcheck::PDFX>
+    # pdfx.pass? #=> true
+    # pdfx.report #=> {:fonts_embedded => true, ....}
+    # pdfx.errors #=> []
+    def compliance(name)
+      case name
+      when "PDF/X-1a:2001"
+        PDFX1a2001.new(self)
+      when "PDF/X"
+        PDFX.new(self)
+      when "PDF/A"
+        PDFA.new(self)
+      end
+    end
+
+    #
     # PDF Version
     #
-    def pdfx?
-      pdfx_intent? && fonts_embedded?
-    end
-
-    def pdfa?
-      pdfa_intent? && fonts_embedded?
-    end
-
-    def pdfx_version
-      metadata.pdfx_version || ""
-    end
-
-    def pdfx_conformance
-      metadata.pdfx_version || ""
-    end
-
-    def pdfx_2001a?
-      pdfx_version == "PDF/X-1:2001" && pdfx_conformance == "PDF/X-1:2001" && !rgb?
-    end
-
-    def pdfx_intent?
-      @metadata.output_intent == "GTS_PDFX"
-    end
-
-    def pdfa_intent?
-      @metadata.output_intent == "GTS_PDFA1-A"
-    end
-
     def pdf_version
       @details.xpath("/PDFCheck/Source").attr("PDFVersion").value
     end
@@ -103,8 +94,9 @@ module PDFcheck
 
     private
 
-    def process(file_path)
-      temp_file_path = "#{@tmp_dir}/pdfcheck_#{rand(1000000)}.xml"
+    def process(file_path, options)
+      filename = File.basename(file_path).sub(File.extname(file_path), "")
+      temp_file_path = "#{@tmp_dir}/#{filename}.pdfcheck_#{rand(1000000)}.xml"
       command = []
       command << @pdfcheck_path
       command << file_path
@@ -112,7 +104,7 @@ module PDFcheck
       command << "&& cat #{temp_file_path}"
       output  = `#{command.join(" ")}`
     
-      File.unlink(temp_file_path)
+      File.unlink(temp_file_path) unless options[:keep_xml]
 
       Nokogiri::XML.parse(output)
     end
