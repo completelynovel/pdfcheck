@@ -33,7 +33,7 @@ module PDFcheck
     #
     # Compliance
     #
-    # pdfx = reader.compliance("PDFX") #=> %<PDFcheck::PDFX>
+    # pdfx = reader.compliance("PDF/X") #=> %<PDFcheck::PDFX>
     # pdfx.pass? #=> true
     # pdfx.report #=> {:fonts_embedded => true, ....}
     # pdfx.errors #=> []
@@ -45,6 +45,8 @@ module PDFcheck
         PDFX.new(self)
       when "PDF/A"
         PDFA.new(self)
+      when "PDF/A-1a"
+        PDFA1a.new(self)
       end
     end
 
