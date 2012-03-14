@@ -30,7 +30,12 @@ module PDFcheck
     private
 
     def detail(selector)
-      @security.xpath("/PDFCheck/PDFSecurity").first.attr(selector)
+      attribute = @security.xpath("/PDFCheck/PDFSecurity")
+      if !attribute.empty?
+        attribute.first.attr(selector)
+      else
+        ""
+      end
     end
   end
 
