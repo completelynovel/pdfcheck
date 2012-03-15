@@ -97,18 +97,23 @@ module PDFcheck
     private
 
     def process(file_path, options)
-      filename = File.basename(file_path).sub(File.extname(file_path), "")
-      temp_file_path = "#{@tmp_dir}/#{filename}.pdfcheck_#{rand(1000000)}.xml"
-      command = []
-      command << @pdfcheck_path
-      command << file_path
-      command << temp_file_path
-      command << "&& cat #{temp_file_path}"
-      @xml  = `#{command.join(" ")}`
-    
-      File.unlink(temp_file_path) unless options[:keep_xml]
+      begin
+        filename = File.basename(file_path).sub(File.extname(file_path), "")
+        temp_file_path = "#{@tmp_dir}/#{filename}.pdfcheck_#{rand(1000000)}.xml"
+        command = []
+        command << @pdfcheck_path
+        command << file_path
+        command << temp_file_path
+        command << "&& cat #{temp_file_path}"
+        @xml  = `#{command.join(" ")}`
+      
+        File.unlink(temp_file_path) unless options[:keep_xml]
 
-      Nokogiri::XML.parse(@xml)
+        Nokogiri::XML.parse(@xml)
+      rescue
+        puts "!!!!!!!!! failed to parse pdf document !!!!!!!!!!!!!"
+        Nokogiri::XML.parse("")
+      end
     end
 
   end
