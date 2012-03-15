@@ -27,7 +27,7 @@ module PDFcheck
     def detail(selector)
       attribute = @colors.xpath("/PDFCheck/Colors")
       if !attribute.empty?
-        attribute.attr('Content').value
+        attribute.attr(selector).value
       else
         ""
       end

@@ -54,7 +54,12 @@ module PDFcheck
     # PDF Version
     #
     def pdf_version
-      @details.xpath("/PDFCheck/Source").attr("PDFVersion").value
+      attribute = @details.xpath("/PDFCheck/Source")
+      if !attribute.empty?
+        attribute.attr("PDFVersion").value
+      else
+        ""
+      end
     end
 
     #
